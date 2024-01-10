@@ -52,5 +52,27 @@ GROUP  BY manufacturer
 ORDER BY total_loss DESC
 
 --EX9
+SELECT * FROM Cinema
+WHERE id%2=1 AND  description !='boring'
+ORDER BY rating DESC
+
+--EX10
+SELECT teacher_id, 
+COUNT(DISTINCT subject_id) AS cnt
+FROM Teacher
+GROUP BY teacher_id
+
+--EX11
+SELECT user_id,
+COUNT(user_id) AS followers_count
+FROM Followers
+GROUP BY user_id
+ORDER BY user_id
+
+--EX12
+ SELECT class
+ FROM Courses
+ GROUP BY class
+ HAVING COUNT(student)>=5
 
 
