@@ -54,3 +54,4 @@ SELECT title,
 SUBSTRING(title FROM LENGTH(winery)+2 FOR 4)
 FROM winemag_p2
 WHERE country='Macedonia'
+AND SUBSTRING(title FROM LENGTH(winery)+2 FOR 4) BETWEEN '1000' AND '3000'
