@@ -35,3 +35,22 @@ SELECT tweet_id
 FROM Tweets
 WHERE LENGTH(content)>15
 --ex7
+ SELECT activity_date AS day,
+ COUNT(DISTINCT user_id) AS active_users
+ FROM Activity
+ WHERE activity_date BETWEEN '2019-06-28'AND '2019-07-27'
+ GROUP BY activity_date
+--ex8
+select COUNT(id) AS number_employee
+FROM employees
+WHERE EXTRACT(month FROM joining_date) BETWEEN 1 AND 7
+AND EXTRACT(year from joining_date)=2022
+--ex9
+select POSITION('a' in first_name)
+from worker
+where first_name='Amitah'
+--ex10
+SELECT title,
+SUBSTRING(title FROM LENGTH(winery)+2 FOR 4)
+FROM winemag_p2
+WHERE country='Macedonia'
