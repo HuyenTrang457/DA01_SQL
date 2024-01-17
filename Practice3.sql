@@ -22,3 +22,11 @@ ROUND(AVG(stars),2) AS avg_stars
 FROM reviews
 GROUP BY mth, product_id
 ORDER BY mth, product_id
+--ex5
+SELECT sender_id,
+COUNT(message_id) AS message_count
+FROM messages
+WHERE TO_CHAR(sent_date,'mm-yyyy')= '08-2022'
+GROUP BY sender_id
+ORDER BY message_count desc
+LIMIT 2
