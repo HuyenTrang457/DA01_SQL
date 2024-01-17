@@ -30,3 +30,8 @@ WHERE TO_CHAR(sent_date,'mm-yyyy')= '08-2022'
 GROUP BY sender_id
 ORDER BY message_count desc
 LIMIT 2
+--ex6
+SELECT tweet_id
+FROM Tweets
+WHERE LENGTH(content)>15
+--ex7
