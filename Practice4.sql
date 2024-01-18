@@ -28,4 +28,19 @@ END
 FROM callers
 
 --EX4
+select name 
+from customer 
+where referee_id is null or referee_id!=2;
+--CACH 2, EX4
+select name 
+from customer 
+where coalesce(referee_id,0) <>2
 
+--EX5
+SELECT survived,
+
+SUM(CASE WHEN pclass=1 THEN 1 ELSE 0 END ) AS first_class,
+SUM(CASE WHEN pclass=2 THEN 1 ELSE 0 END ) AS second_class,
+SUM(CASE WHEN pclass=3 THEN 1 ELSE 0 END ) AS third_class
+FROM titanic
+GROUP BY survived
