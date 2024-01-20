@@ -12,3 +12,4 @@ LEFT JOIN texts t ON e.email_id=t.email_id
 AND t.signup_action='Confirmed'
 
 --EX3
+
