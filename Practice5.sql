@@ -20,3 +20,14 @@ JOIN age_breakdown b ON a.user_id=b.user_id
 WHERE a.activity_type IN('send','open')
 GROUP BY b.age_bucket
 --EX4
+SELECT  c.customer_id
+
+FROM customer_contracts c 
+INNER JOIN products p ON c.product_id=p.product_id
+
+GROUP BY c.customer_id
+HAVING COUNT(DISTINCT(p.product_category))=3
+/*cach2: =(select count(DISTINCT product_category) 
+as product_category  from  products) */
+
+
