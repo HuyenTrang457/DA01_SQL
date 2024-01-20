@@ -12,4 +12,11 @@ LEFT JOIN texts t ON e.email_id=t.email_id
 AND t.signup_action='Confirmed'
 
 --EX3
-
+SELECT b.age_bucket,
+ROUND((SUM(a.time_spent) FILTER (WHERE a.activity_type='send')/SUM(a.time_spent)*100),2) AS send_perc,
+ROUND((SUM(a.time_spent) FILTER (WHERE a.activity_type='open' )/SUM(a.time_spent)*100),2) as open_perc
+FROM activities a
+JOIN age_breakdown b ON a.user_id=b.user_id
+WHERE a.activity_type IN('send','open')
+GROUP BY b.age_bucket
+--EX4
