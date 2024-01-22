@@ -109,5 +109,14 @@ LEFT JOIN customer c ON a.address_id=c.address_id
 WHERE c.customer_id IS NULL
 
 --QUESTION 7
+SELECT a.city, 
+SUM(d.amount) AS sum_amount
+
+FROM city a
+JOIN address b ON a.city_id=b.city_id
+JOIN customer c ON c.address_id=b.address_id
+JOIN payment d ON d.customer_id=c.customer_id
+GROUP BY a.city
+ORDER BY sum_amount DESC
 
 
