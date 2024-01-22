@@ -81,4 +81,11 @@ JOIN film_category AS b ON a.film_id=b.film_id
 JOIN category AS c ON b.category_id=c.category_id
 WHERE c.name IN ('Drama','Sports')
 ORDER BY a.length DESC
-
+--QUESTION 3
+SELECT c.name,
+COUNT(a.title) AS so_luong
+FROM film AS a
+JOIN film_category AS b ON a.film_id=b.film_id
+JOIN category AS c ON b.category_id=c.category_id
+GROUP BY c.name
+ORDER BY so_luong DESC
