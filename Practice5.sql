@@ -74,5 +74,11 @@ SUM(CASE
 END) AS count_high
 FROM film
 GROUP BY category
---QUESTION 2
+--QUESTION 3
+SELECT a.title, a.length, c.name
+FROM film AS a
+JOIN film_category AS b ON a.film_id=b.film_id
+JOIN category AS c ON b.category_id=c.category_id
+WHERE c.name IN ('Drama','Sports')
+ORDER BY a.length DESC
 
