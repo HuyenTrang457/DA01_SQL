@@ -93,3 +93,11 @@ JOIN film_category AS b ON a.film_id=b.film_id
 JOIN category AS c ON b.category_id=c.category_id
 GROUP BY c.name
 ORDER BY so_luong DESC
+
+--EX5
+SELECT a.first_name, a.last_name,
+COUNT(b.film_id) AS so_luong
+FROM actor AS a
+JOIN film_actor AS b ON a.actor_id=b.actor_id
+GROUP BY a.first_name, a.last_name
+ORDER BY so_luong DESC
