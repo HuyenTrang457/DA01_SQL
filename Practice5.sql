@@ -119,4 +119,15 @@ JOIN payment d ON d.customer_id=c.customer_id
 GROUP BY a.city
 ORDER BY sum_amount DESC
 
+--EX8
+SELECT a.city||', '||b.country,
+SUM(e.amount)
+FROM city a
+JOIN country b ON a.country_id=b.country_id
+JOIN address c ON c.city_id=a.city_id
+JOIN customer d ON c.address_id=d.address_id
+JOIN payment e ON e.customer_id=d.customer_id
+GROUP BY a.city, b.country
+ORDER BY Sum(e.amount) asc
+
 
