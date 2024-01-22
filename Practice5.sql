@@ -57,4 +57,22 @@ FROM film
 ORDER BY replacement_cost 
 LIMIT 1
 --QUESTION 2
+SELECT 
+CASE 
+	WHEN replacement_cost BETWEEN 9.99 AND 19.99 THEN 'low'
+	WHEN replacement_cost BETWEEN 20.00 AND 24.99 THEN 'medium'
+	WHEN replacement_cost BETWEEN 25.00 AND 29.99 THEN 'high'
+ END AS category,
+SUM(CASE 
+	WHEN replacement_cost BETWEEN 9.99 AND 19.99 THEN 1 ELSE 0
+   END) AS count_low,
+SUM(CASE
+	WHEN replacement_cost BETWEEN 20.00 AND 24.99 THEN 1 ELSE 0
+ END) AS count_medium,
+SUM(CASE
+   	WHEN replacement_cost BETWEEN 25.00 AND 29.99 THEN 1 ELSE 0
+END) AS count_high
+FROM film
+GROUP BY category
+--QUESTION 2
 
