@@ -94,10 +94,20 @@ JOIN category AS c ON b.category_id=c.category_id
 GROUP BY c.name
 ORDER BY so_luong DESC
 
---EX5
+--QUESTION 5
 SELECT a.first_name, a.last_name,
 COUNT(b.film_id) AS so_luong
 FROM actor AS a
 JOIN film_actor AS b ON a.actor_id=b.actor_id
 GROUP BY a.first_name, a.last_name
 ORDER BY so_luong DESC
+
+--QUESTION 6
+SELECT a.address
+FROM address a
+LEFT JOIN customer c ON a.address_id=c.address_id
+WHERE c.customer_id IS NULL
+
+--QUESTION 7
+
+
