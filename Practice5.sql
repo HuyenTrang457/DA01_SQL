@@ -29,5 +29,20 @@ GROUP BY c.customer_id
 HAVING COUNT(DISTINCT(p.product_category))=3
 /*cach2: =(select count(DISTINCT product_category) 
 as product_category  from  products) */
-
+--ex5
+ SELECT e1.employee_id,e1.name,
+ COUNT(e2.reports_to) AS reports_count,
+ROUND(AVG(e2.age)) AS average_age
+ FROM employees AS e1
+ JOIN employees AS e2 ON e1.employee_id=e2.reports_to
+ GROUP BY e1.employee_id,e1.name
+ ORDER BY e1.employee_id
+--EX6
+SELECT p.product_name,
+SUM(o.unit) as unit
+FROM Products as p
+JOIN Orders as o ON p.product_id=o.product_id
+WHERE o.order_date BETWEEN '2020-02-01' AND '2020-02-29'
+GROUP BY p.product_name
+HAVING SUM(o.unit)>=100
 
