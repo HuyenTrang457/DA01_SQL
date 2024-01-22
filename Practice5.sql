@@ -51,3 +51,10 @@ FROM pages AS a
 LEFT JOIN page_likes AS b ON a.page_id=b.page_id
 WHERE b.liked_date IS NULL
 ORDER BY a.page_id 
+--QUESTION 1
+SELECT DISTINCT replacement_cost
+FROM film
+ORDER BY replacement_cost 
+LIMIT 1
+--QUESTION 2
+
