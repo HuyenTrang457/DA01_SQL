@@ -28,5 +28,18 @@ FROM customer c
 JOIN total_payment AS b ON c.customer_id=b.customer_id
 JOIN avg_time AS d ON d.customer_id=c.customer_id
 
-
+ /* tìm hđ có số tiền cao hơn số tiền TB của mỗi khách hàng đó chi tiêu
+ trên mỗi hóa đơn,kq: mã kh, tên kh, số lượng hđ, số tiền,
+ số tiền TB mỗi kh*/
+ 
+WITH amount_payment AS(SELECT customer_id, AVG(amount)  as avg_payment,
+			COUNT(payment_id) as soluong_hd
+FROM payment
+GROUP BY customer_id)
+SELECT c.customer_id,c.first_name,soluong_hd,avg_payment,d.amount
+FROM customer c
+JOIN amount_payment as p ON c.customer_id=p.customer_id
+JOIN payment as d ON d.customer_id =p.customer_id
+WHERE d.amount>avg_payment
+ORDER BY customer_id
  
