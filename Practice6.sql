@@ -34,5 +34,22 @@ WHERE amount_case >=3
  WHERE page_id NOT IN (
     SELECT page_id FROM page_likes
  )
+--EX5
+WITH curr_d AS
+(SELECT user_id,event_date
+FROM user_actions
+WHERE EXTRACT(MONTH from event_date)='7'),
 
+past_d AS 
+(SELECT user_id,event_date
+FROM user_actions
+WHERE EXTRACT(MONTH from event_date)='6'
+)
+
+SELECT EXTRACT(MONTH from a.event_date) AS mth,
+COUNT(DISTINCT a.user_id) monthly_active_users
+
+FROM curr_d a
+JOIN past_d b ON a.user_id=b.user_id
+GROUP BY EXTRACT(MONTH from a.event_date)
   
