@@ -96,4 +96,26 @@ SELECT employee_id
 
 --EX11
  
-  
+  (
+    SELECT b.name AS results
+    FROM MovieRating a
+        JOIN Users AS b ON a.user_id=b.user_id
+        GROUP BY a.user_id
+    ORDER BY  COUNT(a.user_id) DESC,b.name
+        LIMIT 1)
+UNION ALL
+(
+     SELECT  d.title AS results
+    FROM MovieRating c
+    JOIN Movies d ON c.movie_id=d.movie_id
+    WHERE EXTRACT(YEAR FROM created_at)=2020 AND EXTRACT(MONTH FROM created_at)=2
+        GROUP BY c.movie_id
+    ORDER BY AVG(rating) DESC, d.title
+        LIMIT 1
+)
+
+
+
+
+
+
