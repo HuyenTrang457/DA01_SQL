@@ -69,18 +69,31 @@ GROUP BY country, SUBSTRING(trans_date,1,7 )
 
 SELECT product_id, MIN(year) AS first_year,quantity,price
 FROM Sales
-GROUP BY product_id
+  GROUP BY product_id
 
 --EX8
 SELECT customer_id
 FROM customer
-GROUP BY customer_id
-HAVING COUNT(DISTINCT product_key )= (SELECT COUNT(*) FROM Product)
+  GROUP BY customer_id
+  HAVING COUNT(DISTINCT product_key )= (SELECT COUNT(*) FROM Product)
 
 --EX9
 SELECT employee_id
  FROM Employees
- WHERE salary< 30000 AND manager_id NOT IN (SELECT employee_id FROM Employees)
+   WHERE salary< 30000 AND manager_id NOT IN (SELECT employee_id FROM Employees)
  ORDER BY employee_id
 
+--EX10
+  WITH count_dupl AS
+    (SELECT company_id,COUNT(company_id) as company_count,
+  title, description
+  FROM job_listings
+  GROUP BY company_id,title,description)
+  
+  SELECT COUNT(company_count) as duplicate_companies
+  FROM count_dupl
+    WHERE company_count=2
 
+--EX11
+ 
+  
