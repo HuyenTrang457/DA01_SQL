@@ -10,6 +10,27 @@ WITH count_dupl AS
   FROM count_dupl
   WHERE company_count=2
 
+  --EX2
+(SELECT category,product,
+    SUM(spend) as total
+FROM product_spend
+  WHERE EXTRACT(year from transaction_date )= '2022'
+      AND category='appliance'
+  GROUP BY category,product
+ORDER BY total DESC
+LIMIT 2)
+
+UNION ALL
+
+(SELECT category,product,
+    SUM(spend) as total
+FROM product_spend
+    WHERE EXTRACT(year from transaction_date )= '2022'
+      AND category='electronics'
+  GROUP BY category,product
+ORDER BY total DESC
+LIMIT 2)
+  
 --EX3
 WITH CTE_amount as
 (SELECT policy_holder_id,
