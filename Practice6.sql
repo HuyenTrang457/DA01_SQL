@@ -65,3 +65,22 @@ END) AS approved_total_amount
 FROM Transactions
 GROUP BY country, SUBSTRING(trans_date,1,7 )
 
+--EX7
+
+SELECT product_id, MIN(year) AS first_year,quantity,price
+FROM Sales
+GROUP BY product_id
+
+--EX8
+SELECT customer_id
+FROM customer
+GROUP BY customer_id
+HAVING COUNT(DISTINCT product_key )= (SELECT COUNT(*) FROM Product)
+
+--EX9
+SELECT employee_id
+ FROM Employees
+ WHERE salary< 30000 AND manager_id NOT IN (SELECT employee_id FROM Employees)
+ ORDER BY employee_id
+
+
