@@ -34,7 +34,7 @@ FROM
   WHERE m.stt=1
   ORDER BY transaction_date
 
-  --EX4
+  --EX5
   WITH CTE_A AS (SELECT user_id,tweet_date, tweet_count,
                         LAG(tweet_count,1) OVER(PARTITION BY user_id ORDER BY tweet_date ) AS last1,
                         LAG(tweet_count,2) OVER(PARTITION BY user_id ORDER BY tweet_date ) AS last2,
@@ -49,7 +49,6 @@ CASE
 END AS rolling_avg_3d
 FROM CTE_A
 
---EX5
   
 --EX6
   WITH CTE AS (SELECT merchant_id,credit_card_id,amount,transaction_timestamp AS time,
