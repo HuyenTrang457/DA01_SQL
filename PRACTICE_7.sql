@@ -34,6 +34,16 @@ FROM
   WHERE m.stt=1
   ORDER BY transaction_date
 
+--EX7
+  WITH CTE_A AS (SELECT category,product ,SUM(spend) AS total_spend,
+                      DENSE_RANK() OVER(PARTITION BY category ORDER BY SUM(spend) DESC) AS stt
+                FROM product_spend
+                WHERE EXTRACT(YEAR FROM transaction_date)='2022'
+                GROUP BY product,category)
+SELECT category,product,total_spend
+FROM CTE_A
+WHERE stt IN (1,2)
+
 
 --EX8
 WITH CTE_A AS (SELECT a.artist_name,
