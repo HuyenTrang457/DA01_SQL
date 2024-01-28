@@ -34,6 +34,34 @@ FROM
   WHERE m.stt=1
   ORDER BY transaction_date
 
+  --EX4
+  WITH CTE_A AS (SELECT user_id,tweet_date, tweet_count,
+                        LAG(tweet_count,1) OVER(PARTITION BY user_id ORDER BY tweet_date ) AS last1,
+                        LAG(tweet_count,2) OVER(PARTITION BY user_id ORDER BY tweet_date ) AS last2,
+                        ROW_NUMBER() OVER(PARTITION BY user_id ORDER BY tweet_date ) AS stt
+                FROM tweets)
+
+SELECT user_id, tweet_date,
+CASE
+    WHEN stt=1 THEN   ROUND(tweet_count/1.0,2)
+    WHEN stt=2 THEN ROUND((tweet_count+last1)/2.0,2)
+    WHEN stt>=3 THEN ROUND((tweet_count+last1+last2)/3.0 ,2)
+END AS rolling_avg_3d
+FROM CTE_A
+
+--EX5
+  
+--EX6
+  WITH CTE AS (SELECT merchant_id,credit_card_id,amount,transaction_timestamp AS time,
+    LEAD(transaction_timestamp) OVER(PARTITION BY merchant_id,credit_card_id,amount ORDER BY transaction_timestamp ) AS next_time,
+    (LEAD(transaction_timestamp) OVER (PARTITION BY merchant_id,credit_card_id,amount ORDER BY transaction_timestamp )
+        - transaction_timestamp) AS diff
+    FROM transactions)
+
+SELECT COUNT(*) 
+FROM CTE  
+WHERE EXTRACT(HOUR FROM diff)*60+ EXTRACT(MINUTE FROM diff) <=10
+
 --EX7
   WITH CTE_A AS (SELECT category,product ,SUM(spend) AS total_spend,
                       DENSE_RANK() OVER(PARTITION BY category ORDER BY SUM(spend) DESC) AS stt
