@@ -20,3 +20,13 @@ CASE
 END AS  id,student
 FROM Seat
 ORDER BY id
+
+--EX6
+
+WITH CTE AS (SELECT departmentId,name,salary,
+                        DENSE_RANK() OVER(PARTITION BY departmentId ORDER BY salary DESC) AS stt
+                FROM Employee)
+SELECT b.name AS Department, a.name AS Employee, a.salary AS Salary
+FROM CTE a
+JOIN Department b ON a.departmentId=b.id
+WHERE a.stt<=3
