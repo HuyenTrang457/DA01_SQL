@@ -23,4 +23,16 @@ GROUP BY  1
 ORDER BY  1
 
  
+--2
+ WITH CTE AS(SELECT *,
+ DENSE_RANK() OVER(PARTITION BY gender ORDER BY age) AS stt
+ FROM bigquery-public-data.thelook_ecommerce.users),
 
+ CTE_2 AS(SELECT *,
+ MIN(stt) OVER(PARTITION BY gender ) AS min_stt ,
+ MAX(stt) OVER(PARTITION BY gender )  AS max_stt
+ FROM CTE)
+ SELECT
+ first_name, last_name, gender, age
+ FROM CTE_2
+ WHERE stt=min_stt OR stt=max_stt
