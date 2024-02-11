@@ -8,7 +8,10 @@ WITH
 SELECT
   FORMAT_DATE( '%Y-%m',b.created_at) AS month_year,
   COUNT(a.order_id) AS total_order,
-  COUNT(b.order_id) AS total_user
+  COUNT(b.user_id) AS total_user,
+  ROUND(SUM(b.sale_price)/COUNT(b.sale_price),2) AS average_order_value,
+  COUNT(DISTINCT b.user_id) AS distinct_user,
+  
 FROM
   CTE AS a
 RIGHT JOIN
@@ -18,4 +21,6 @@ WHERE
   FORMAT_DATE( '%Y-%m',b.created_at) BETWEEN '2019-01' AND '2022-04'
 GROUP BY  1
 ORDER BY  1
+
+ 
 
