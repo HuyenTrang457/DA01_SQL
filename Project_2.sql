@@ -1,4 +1,3 @@
---1. Số lượng đơn hàng và số lượng khách hàng mỗi tháng
 WITH
   CTE AS ((
     SELECT *
@@ -8,8 +7,8 @@ WITH
       AND returned_at IS NULL ))
 SELECT
   FORMAT_DATE( '%Y-%m',b.created_at) AS month_year,
-  COUNT(a.order_id) AS finish_order,
-  COUNT(b.order_id) AS total_order
+  COUNT(a.order_id) AS total_order,
+  COUNT(b.order_id) AS total_user
 FROM
   CTE AS a
 RIGHT JOIN
