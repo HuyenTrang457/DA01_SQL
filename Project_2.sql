@@ -30,7 +30,7 @@ ORDER BY  1
 
 
 
---3
+--3. Nhóm khách hàng theo độ tuổi
 WITH CTE AS(SELECT *,
                  DENSE_RANK() OVER(PARTITION BY gender ORDER BY age) AS stt
              FROM bigquery-public-data.thelook_ecommerce.users),
