@@ -47,6 +47,27 @@ FROM CTE_2 AS a
             Female: trẻ nhất là 12t, số lượng: 211
                     lớn nhất 70t, số lượng: 218 */
 
+--4
+--Thống kê top 5 sản phẩm có lợi nhuận cao nhất từng tháng (xếp hạng cho từng sản phẩm). 
+WITH CTE AS (SELECT FORMAT_DATE( '%Y-%m',created_at) AS month_year, product_id, product_name,
+                  SUM(product_retail_price-cost) OVER(PARTITION BY product_id,FORMAT_DATE( '%Y-%m',created_at)) AS profit,
+            FROM bigquery-public-data.thelook_ecommerce.inventory_items
+            ORDER BY FORMAT_DATE( '%Y-%m',created_at)),
+    CTE_2 AS (SELECT *, 
+                      DENSE_RANK() OVER(PARTITION BY month_year ORDER BY profit DESC) AS rank_per_month
+              FROM CTE
+              ORDER BY month_year)
+SELECT *
+FROM CTE_2
+WHERE rank_per_month<=5
+
+
+
+
+
+
+
+
 
 
 
