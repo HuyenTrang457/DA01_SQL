@@ -1,3 +1,8 @@
+--1.Thống kê tổng số lượng người mua và số lượng đơn hàng đã hoàn thành mỗi tháng ( Từ 1/2019-4/2022)
+    --insight: total_order và total_user tăng theo thời gian mỗi tháng, nhưng không đều
+--2.Thống kê giá trị đơn hàng trung bình và tổng số người dùng khác nhau mỗi tháng ( Từ 1/2019-4/2022)
+    --insight: distinct_user tăng dần theo thời gian, average_order_value lúc tăng lúc giảm
+
 WITH
   CTE AS ((
     SELECT *
@@ -22,7 +27,7 @@ WHERE
 GROUP BY  1
 ORDER BY  1
 
- 
+
 
 
 --3
@@ -63,12 +68,12 @@ FROM CTE_2
 WHERE rank_per_month<=5
 
 --5
-SELECT * FROM
-(SELECT FORMAT_DATE( '%Y-%m-%d',sold_at) AS dates,product_category,
-ROUND(SUM(product_retail_price),2) AS revenue
-FROM bigquery-public-data.thelook_ecommerce.inventory_items
-WHERE sold_at IS NOT NULL  
-GROUP BY product_category,FORMAT_DATE( '%Y-%m-%d',sold_at)
+SELECT * 
+FROM (SELECT FORMAT_DATE( '%Y-%m-%d',sold_at) AS dates,product_category,
+              ROUND(SUM(product_retail_price),2) AS revenue
+      FROM bigquery-public-data.thelook_ecommerce.inventory_items
+      WHERE sold_at IS NOT NULL  
+      GROUP BY product_category,FORMAT_DATE( '%Y-%m-%d',sold_at)
 ) AS a
 WHERE dates BETWEEN '2022-01-15'  AND '2022-04-15'
 ORDER BY dates,product_category
