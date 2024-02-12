@@ -62,7 +62,16 @@ SELECT *
 FROM CTE_2
 WHERE rank_per_month<=5
 
-
+--5
+SELECT * FROM
+(SELECT FORMAT_DATE( '%Y-%m-%d',sold_at) AS dates,product_category,
+ROUND(SUM(product_retail_price),2) AS revenue
+FROM bigquery-public-data.thelook_ecommerce.inventory_items
+WHERE sold_at IS NOT NULL  
+GROUP BY product_category,FORMAT_DATE( '%Y-%m-%d',sold_at)
+) AS a
+WHERE dates BETWEEN '2022-01-15'  AND '2022-04-15'
+ORDER BY dates,product_category
 
 
 
