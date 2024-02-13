@@ -1,5 +1,18 @@
 --1.Thống kê tổng số lượng người mua và số lượng đơn hàng đã hoàn thành mỗi tháng ( Từ 1/2019-4/2022)
     --insight: total_order và total_user tăng theo thời gian mỗi tháng, nhưng không đều
+
+SELECT
+  FORMAT_DATE( '%Y-%m',b.delivered_at) AS month_year,
+  COUNT(b.order_id) AS total_order,
+  COUNT(DISTINCT b.user_id) AS total_user,
+FROM bigquery-public-data.thelook_ecommerce.order_items AS b
+WHERE
+  FORMAT_DATE( '%Y-%m',b.created_at) BETWEEN '2019-01' AND '2022-04'
+  AND b.status='Complete'
+GROUP BY  1
+ORDER BY  1
+
+
 --2.Thống kê giá trị đơn hàng trung bình và tổng số người dùng khác nhau mỗi tháng ( Từ 1/2019-4/2022)
     --insight: distinct_user tăng dần theo thời gian, average_order_value lúc tăng lúc giảm
 
