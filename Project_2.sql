@@ -119,15 +119,14 @@ WHERE rank_per_month<=5
 
 --5.Thống kê tổng doanh thu theo ngày của từng danh mục sản phẩm (category) trong 3 tháng qua ( giả sử ngày hiện tại là 15/4/2022)
     
-SELECT * 
-FROM (SELECT FORMAT_DATE( '%Y-%m-%d',sold_at) AS dates,product_category,
-              ROUND(SUM(product_retail_price),2) AS revenue
-      FROM bigquery-public-data.thelook_ecommerce.inventory_items
-      WHERE sold_at IS NOT NULL  
-      GROUP BY product_category,FORMAT_DATE( '%Y-%m-%d',sold_at)
-) AS a
-WHERE dates BETWEEN '2022-01-15'  AND '2022-04-15'
-ORDER BY dates,product_category
+
+SELECT FORMAT_DATE( '%Y-%m-%d', a.delivered_at) AS dates,b.category,
+              ROUND(sum(a.sale_price),2) as revenue
+FROM bigquery-public-data.thelook_ecommerce.order_items a
+Join bigquery-public-data.thelook_ecommerce.products as b on a.product_id=b.id
+WHERE  a.status='Complete' and a.delivered_at BETWEEN '2022-01-15'  AND '2022-04-15'
+GROUP BY b.category,dates
+ORDER BY dates
 
 
 
