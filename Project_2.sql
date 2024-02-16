@@ -101,13 +101,16 @@ FROM CTE_2 AS a
 
 --4.Thống kê top 5 sản phẩm có lợi nhuận cao nhất từng tháng (xếp hạng cho từng sản phẩm). 
     
-WITH CTE AS (SELECT FORMAT_DATE( '%Y-%m',created_at) AS month_year, product_id, product_name,
-                  SUM(product_retail_price-cost) OVER(PARTITION BY product_id,FORMAT_DATE( '%Y-%m',created_at)) AS profit,
-            FROM bigquery-public-data.thelook_ecommerce.inventory_items
-            WHERE sold_at IS NOT NULL
-            ORDER BY FORMAT_DATE( '%Y-%m',created_at)),
+ WITH CTE AS (SELECT FORMAT_DATE( '%Y-%m',a.created_at) AS month_year, a.product_id, a.product_name,
+                  SUM(b.sale_price)-sum(a.cost)AS profit
+                  
+            FROM bigquery-public-data.thelook_ecommerce.inventory_items a
+            JOIN bigquery-public-data.thelook_ecommerce.order_items b ON a.product_id=b.product_id
+            WHERE b.status='Complete'
+            GROUP BY month_year, a.product_id, a.product_name
+            ),
     CTE_2 AS (SELECT *, 
-                      DENSE_RANK() OVER(PARTITION BY month_year ORDER BY profit DESC) AS rank_per_month
+                      DENSE_RANK() OVER(PARTITION BY month_year ORDER BY profit DESC ) AS rank_per_month
               FROM CTE
               ORDER BY month_year)
 SELECT *
