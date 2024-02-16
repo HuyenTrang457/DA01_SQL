@@ -53,6 +53,52 @@ FROM CTE_2 AS a
             Female: trẻ nhất là 12t, số lượng: 211
                     lớn nhất 70t, số lượng: 218 */
 
+    --------
+     WITH female_age AS (
+  SELECT min(age) as min_age, max(age) as max_age
+  FROM bigquery-public-data.thelook_ecommerce.users
+  WHERE gender='F' AND FORMAT_DATE( '%Y-%m',created_at) BETWEEN '2019-01' AND '2022-04'
+ ),
+ male_age AS (
+  SELECT min(age) as min_age, max(age) as max_age
+  FROM bigquery-public-data.thelook_ecommerce.users
+  WHERE gender='M' AND FORMAT_DATE( '%Y-%m',created_at) BETWEEN '2019-01' AND '2022-04'
+ ),
+ young_old_group AS (
+    (SELECT m1.first_name, m1.last_name, m1.gender, m1.age
+    FROM bigquery-public-data.thelook_ecommerce.users m1
+    JOIN female_age m2 ON m1.age=m2.min_age OR m1.age=m2.max_age
+    WHERE m1.gender='F' AND FORMAT_DATE( '%Y-%m',m1.created_at) BETWEEN '2019-01' AND '2022-04'
+    )
+    UNION ALL
+    (
+      SELECT n1.first_name, n1.last_name, n1.gender, n1.age
+      FROM  bigquery-public-data.thelook_ecommerce.users n1
+      JOIN male_age n2 ON n1.age=n2.min_age OR n1.age=n2.max_age
+      WHERE n1.gender='M' AND FORMAT_DATE( '%Y-%m',n1.created_at) BETWEEN '2019-01' AND '2022-04'
+    )
+ ),
+ age_tag AS (
+  SELECT *,
+      CASE 
+          WHEN age IN (select min(age) from bigquery-public-data.thelook_ecommerce.users 
+                        where gender='F' and FORMAT_DATE( '%Y-%m',created_at) BETWEEN '2019-01' AND '2022-04')
+                THEN 'youngest'
+          WHEN age IN (select min(age) from bigquery-public-data.thelook_ecommerce.users 
+                        where gender='M' and FORMAT_DATE( '%Y-%m',created_at) BETWEEN '2019-01' AND '2022-04')
+                THEN 'youngest'
+          ELSE 'oldest'
+      END as tag
+  FROM young_old_group
+ )
+ SELECT gender, tag,count(*)
+ FROM age_tag
+ GROUP BY gender,tag
+
+
+
+
+
 --4.Thống kê top 5 sản phẩm có lợi nhuận cao nhất từng tháng (xếp hạng cho từng sản phẩm). 
     
 WITH CTE AS (SELECT FORMAT_DATE( '%Y-%m',created_at) AS month_year, product_id, product_name,
