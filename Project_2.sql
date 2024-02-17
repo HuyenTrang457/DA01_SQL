@@ -128,7 +128,19 @@ WHERE  a.status='Complete' and a.delivered_at BETWEEN '2022-01-15'  AND '2022-04
 GROUP BY b.category,dates
 ORDER BY dates
 
+    ------------------------------------------------------------------------------
+--III/
+--1/ sử dụng câu lệnh SQL để tạo ra 1 dataset như mong muốn và lưu dataset đó vào VIEW đặt tên là vw_ecommerce_analyst
 
+SELECT FORMAT_DATE( '%Y-%m',a.delivered_at) AS month_year, c.category as Product_category,
+ROUND(SUM(b.sale_price),2) AS TPV, 
+COUNT(b.product_id) AS TPO
+FROM bigquery-public-data.thelook_ecommerce.orders as a
+JOIN bigquery-public-data.thelook_ecommerce.order_items as b ON a.order_id=b.order_id
+JOIN bigquery-public-data.thelook_ecommerce.products as c ON c.id=b.product_id
+WHERE b.status='Complete'
+GROUP BY month_year, Product_category
+--SELECT * FROM bigquery-public-data.thelook_ecommerce.products
 
 
 
