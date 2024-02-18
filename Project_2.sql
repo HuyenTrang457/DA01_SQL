@@ -133,25 +133,26 @@ ORDER BY dates
 --1/ sử dụng câu lệnh SQL để tạo ra 1 dataset như mong muốn và lưu dataset đó vào VIEW đặt tên là vw_ecommerce_analyst
 
 WITH CTE AS(
-SELECT   FORMAT_DATE( '%Y-%m',b.created_at) AS month_year, c.category as Product_category,
-ROUND(SUM(b.sale_price),2) AS TPV,
-COUNT(b.product_id) AS TPO,
-SUM(c.cost) AS total_cost
-FROM bigquery-public-data.thelook_ecommerce.orders as a
-JOIN bigquery-public-data.thelook_ecommerce.order_items as b ON a.order_id=b.order_id
-JOIN bigquery-public-data.thelook_ecommerce.products as c ON c.id=b.product_id
-WHERE b.status='Complete'
-GROUP BY month_year, Product_category
-ORDER BY Product_category,month_year)
+        SELECT   FORMAT_DATE( '%Y-%m',b.created_at) AS month_year, c.category as Product_category,
+                round(SUM(b.sale_price),2) AS TPV,
+                COUNT(b.product_id) AS TPO,
+                round(SUM(c.cost),2) AS total_cost
+        FROM bigquery-public-data.thelook_ecommerce.orders as a
+        JOIN bigquery-public-data.thelook_ecommerce.order_items as b ON a.order_id=b.order_id
+        JOIN bigquery-public-data.thelook_ecommerce.products as c ON c.id=b.product_id
+        WHERE b.status='Complete'
+        GROUP BY month_year, Product_category
+        ORDER BY Product_category,month_year)
+
 SELECT month_year,Product_category,TPV, TPO,
-ROUND(100*(TPV-(LAG(TPV) OVER(PARTITION BY Product_category ORDER BY month_year)))/(LAG(TPV) OVER(PARTITION BY Product_category ORDER BY month_year)),2)||'%' AS Revenue_growth,
-ROUND(100*(TPO-(LAG(TPO) OVER(PARTITION BY Product_category ORDER BY month_year)))/(LAG(TPO) OVER(PARTITION BY Product_category ORDER BY month_year)),2)||'%' AS Order_growth,
-total_cost,
-TPV-total_cost AS total_profit,
-ROUND((TPV-total_cost)/total_cost,2) AS profit-to_cost_ratio
+    round(100*(TPV-(LAG(TPV) OVER(PARTITION BY Product_category ORDER BY month_year)))/(LAG(TPV) OVER(PARTITION BY Product_category ORDER BY month_year)),2)||'%' AS Revenue_growth,
+    round(100*(TPO-(LAG(TPO) OVER(PARTITION BY Product_category ORDER BY month_year)))/(LAG(TPO) OVER(PARTITION BY Product_category ORDER BY month_year)),2)||'%' AS Order_growth,
+    total_cost,
+    round(TPV-total_cost,2) AS total_profit,
+    round((TPV-total_cost)/total_cost,2) AS profit_to_cost_ratio
 FROM CTE
 ORDER BY Product_category,month_year
---SELECT * FROM bigquery-public-data.thelook_ecommerce.order_items
+
 
 
 
