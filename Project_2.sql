@@ -157,27 +157,52 @@ ORDER BY Product_category,month_year
  
 
 WITH user_index AS 
- (SELECT user_id, FORMAT_DATE('%Y-%m',first_purchase) AS  cohort_month,
+ (SELECT user_id, FORMAT_DATE('%Y-%m',first_purchase) AS  cohort_month, amount,
  (EXTRACT(year FROM created_at)-EXTRACT(year FROM first_purchase))*12
 			+ (EXTRACT(month FROM created_at)-EXTRACT(month FROM first_purchase)) +1 AS index
  FROM ( SELECT user_id, created_at,
- Min(created_at) over(partition by user_id) AS first_purchase
+ Min(created_at) over(partition by user_id) AS first_purchase,
+ round(sale_price,2) as amount
  FROM bigquery-public-data.thelook_ecommerce.order_items) AS a),
  xxx AS (
-      SELECT cohort_month, index,
-            COUNT(distinct user_id) as user_count
-      FROM user_index
-     GROUP BY cohort_month, index
-     ORDER BY index)
- SELECT  
+  SELECT cohort_month, index,
+  COUNT(distinct user_id) as user_count,
+  round(sum(amount),2) AS revenue
+  FROM user_index
+ GROUP BY cohort_month, index
+ ORDER BY index),
+
+ ------Customer cohort ------
+ Customer_cohort AS (
+ SELECT 
 cohort_month,
-Sum(case when index=1 then user_count else 0 end) as m1,
-Sum(case when index=2 then user_count else 0 end) as m2,
-Sum(case when index=3 then user_count else 0 end) as m3,
-Sum(case when index=4 then user_count else 0 end) as m4
-FROM xxx
-GROUP BY cohort_month
-ORDER BY  cohort_month
+  SUM(case when index=1 then user_count else 0 end) as m1,
+  SUM(case when index=2 then user_count else 0 end) as m2,
+  SUM(case when index=3 then user_count else 0 end) as m3,
+  SUM(case when index=4 then user_count else 0 end) as m4
+from xxx
+Group by cohort_month
+Order by cohort_month),
+
+---retention cohort-----
+Retention_cohort AS (
+SELECT cohort_month,
+  round(100.00* m1/m1,2) || '%' as m1,
+  round(100.00* m2/m1,2) || '%' as m2,
+  round(100.00* m3/m1,2) || '%' as m3,
+  round(100.00* m4/m1,2) || '%' as m4
+FROM customer_cohort),
+
+------CHURN COHORT--
+Churn_cohort  AS (
+SELECT
+  round(100-100*m1/m1,2) ||'%' AS m1,
+  round(100-100*m2/m1,2) ||'%' AS m2,
+  round(100-100*m3/m1,2) ||'%' AS m3,
+  round(100-100*m4/m1,2) ||'%' AS m4
+FROM customer_cohort
+)
+
 
 
 
