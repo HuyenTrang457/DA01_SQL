@@ -153,6 +153,33 @@ SELECT month_year,Product_category,TPV, TPO,
 FROM CTE
 ORDER BY Product_category,month_year
 
+-------------------------------------------------------------
+ 
+
+WITH user_index AS 
+ (SELECT user_id, FORMAT_DATE('%Y-%m',first_purchase) AS  cohort_month,
+ (EXTRACT(year FROM created_at)-EXTRACT(year FROM first_purchase))*12
+			+ (EXTRACT(month FROM created_at)-EXTRACT(month FROM first_purchase)) +1 AS index
+ FROM ( SELECT user_id, created_at,
+ Min(created_at) over(partition by user_id) AS first_purchase
+ FROM bigquery-public-data.thelook_ecommerce.order_items) AS a),
+ xxx AS (
+      SELECT cohort_month, index,
+            COUNT(distinct user_id) as user_count
+      FROM user_index
+     GROUP BY cohort_month, index
+     ORDER BY index)
+ SELECT  
+cohort_month,
+Sum(case when index=1 then user_count else 0 end) as m1,
+Sum(case when index=2 then user_count else 0 end) as m2,
+Sum(case when index=3 then user_count else 0 end) as m3,
+Sum(case when index=4 then user_count else 0 end) as m4
+FROM xxx
+GROUP BY cohort_month
+ORDER BY  cohort_month
+
+
 
 
 
