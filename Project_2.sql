@@ -195,7 +195,7 @@ FROM customer_cohort),
 
 ------CHURN COHORT--
 Churn_cohort  AS (
-SELECT
+SELECT cohort_month,
   round(100-100*m1/m1,2) ||'%' AS m1,
   round(100-100*m2/m1,2) ||'%' AS m2,
   round(100-100*m3/m1,2) ||'%' AS m3,
@@ -203,6 +203,16 @@ SELECT
 FROM customer_cohort
 )
 
+-----cohort chart:    https://docs.google.com/spreadsheets/d/1boZvK7um_qkGgtmL3kzkEGgEjEEIbfuGkTcaO0OaJpk/edit#gid=1988940515
+/*
+insight:
++ Số lượng khách hàng mới tăng nhanh theo thời gian, có thể là do The Look thực hiện việc quảng bá, marketing tốt
++ tuy nhiên số lượng khách hàng quay lại vào tháng kế tiếp rất thấp, cụ thể:
+  - trong giai đoạn 1/2019 - 9/2023: tỉ lệ quay lại dao động khoảng 0-->10%
+  - giai đoạn T10,11,12 của 2023: tỉ lệ quay lại trên mức 10%
+--> giải pháp: đưa ra chiến lược(cải thiện sản phẩm, chất lượng phục vụ...) nhằm giữ chân khách hàng cũ ,
+từ đó tiết kiệm được chi phí marketing cũng như tăng lợi nhuận
+*/
 
 
 
