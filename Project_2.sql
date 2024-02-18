@@ -153,8 +153,8 @@ SELECT month_year,Product_category,TPV, TPO,
 FROM CTE
 ORDER BY Product_category,month_year
 
--------------------------------------------------------------
- 
+
+ --TẠO COHORT-------------------------------------------------------------------------
 
 WITH user_index AS 
  (SELECT user_id, FORMAT_DATE('%Y-%m',first_purchase) AS  cohort_month, amount,
