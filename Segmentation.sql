@@ -14,8 +14,8 @@ GROUP BY a.customer_id)
 --Bước 2: chia các giá trị thành các khoảng trên thang 1->5
 ,rfm_score AS (SELECT customer_id,
 ntile(5) OVER(ORDER BY R DESC) AS R_score,
-ntile(5) OVER(ORDER BY F DESC) AS F_score,
-ntile(5) OVER(ORDER BY M DESC) AS M_score
+ntile(5) OVER(ORDER BY F ) AS F_score,
+ntile(5) OVER(ORDER BY M ) AS M_score
 FROM customer_rfm)
 
 --Bước 3: Phân nhóm theo 125 tổ hợp RFM
