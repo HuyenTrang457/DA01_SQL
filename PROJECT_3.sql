@@ -6,6 +6,7 @@ SELECT productline, year_id, dealsize,
 			FROM sales_dataset_rfm_prj_clean
 			GROUP BY productline, year_id, dealsize
 			ORDER BY productline, year_id, dealsize
+	--------------------------------------------------------------------------------------------
 /*2) Đâu là tháng có bán tốt nhất mỗi năm?
 Output: MONTH_ID, REVENUE, ORDER_NUMBER
 */
@@ -17,7 +18,7 @@ FROM
 	 group by month_id, year_id
 	) AS a
 WHERE stt=1
-
+	--------------------------------------------------------------------------------------------
 /*3) Product line nào được bán nhiều ở tháng 11?
 Output: MONTH_ID, REVENUE, ORDER_NUMBER
 */
@@ -32,6 +33,7 @@ FROM
 	) AS a
 WHERE stt=1 
 
+	--------------------------------------------------------------------------------------------
 /*4) Đâu là sản phẩm có doanh thu tốt nhất ở UK mỗi năm? 
 Xếp hạng các các doanh thu đó theo từng năm.
 Output: YEAR_ID, PRODUCTLINE,REVENUE, RANK
@@ -44,6 +46,7 @@ SELECT * FROM
 	group by  year_id, productline) AS a
 WHERE rank =1
 
+	--------------------------------------------------------------------------------------------
 
 /*5) Ai là khách hàng tốt nhất, phân tích dựa vào RFM 
 (sử dụng lại bảng customer_segment ở buổi học 23)
@@ -63,7 +66,7 @@ group by  contactfullname, postalcode)
 		ntile(5) over(order by M ) AS M_score
 from rfm)
 
---B3: phan nhom 
+--B3: phan nhom ---> tìm KH
 , rfm_final as (SELECT contactfullname, postalcode,
 cast(R_score AS varchar)||cast(F_score AS varchar)||cast(M_score AS varchar) as rfm_score
 FROM CTE)
