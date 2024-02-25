@@ -57,7 +57,7 @@ WITH rfm AS
 FROM public.sales_dataset_rfm_prj_clean
 group by  contactfullname, postalcode)
 --B2: chia cac gtri tu 1-->5
-,rfm_score as (select contactfullname, postalcode,
+,CTE as (select contactfullname, postalcode,
 		ntile(5) over(order by R desc) AS R_score,
 		ntile(5) over(order by F ) AS F_score,
 		ntile(5) over(order by M ) AS M_score
@@ -66,12 +66,21 @@ from rfm)
 --B3: phan nhom 
 , rfm_final as (SELECT contactfullname, postalcode,
 cast(R_score AS varchar)||cast(F_score AS varchar)||cast(M_score AS varchar) as rfm_score
-FROM rfm_score)
+FROM CTE)
 
-SELECT b.contactfullname, b.postalcode
+SELECT b.contactfullname, b.postalcode,b.rfm_score
 FROM public.segment_score a
 JOIN rfm_final b ON a.scores=b.rfm_score
  where segment = 'Champions'
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
 
 
 
