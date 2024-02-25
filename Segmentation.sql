@@ -1,8 +1,10 @@
+
 --Bước 1: tính giá tri RFM
+
 WITH customer_rfm AS
 
 (select a.customer_id, 
-current_date - MAX(b.order_date) AS R,
+current_date - MAX(cast(b.order_date as timestamp)) AS R,
 COUNT(DISTINCT b.order_id) AS F,
 SUM(b.sales) AS M
 FROM customer a
@@ -28,23 +30,6 @@ FROM rfm_final a
 JOIN public.segment_score b ON a.rfm_score=b.scores) AS a
 GROUP BY segment
 order by COUNT(*)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
