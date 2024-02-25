@@ -44,9 +44,68 @@ SELECT * FROM
 	group by  year_id, productline) AS a
 WHERE rank =1
 
+
 /*5) Ai là khách hàng tốt nhất, phân tích dựa vào RFM 
 (sử dụng lại bảng customer_segment ở buổi học 23)
 */
+--B1: tinh RFM
+WITH rfm AS
+(select contactfullname, postalcode,
+		current_date - max(orderdate) as R,
+		COUNT(distinct ordernumber) as F,
+		SUM(sales) as M
+FROM public.sales_dataset_rfm_prj_clean
+group by  contactfullname, postalcode)
+--B2: chia cac gtri tu 1-->5
+,rfm_score as (select contactfullname, postalcode,
+		ntile(5) over(order by R desc) AS R_score,
+		ntile(5) over(order by F ) AS F_score,
+		ntile(5) over(order by M ) AS M_score
+from rfm)
+
+--B3: phan nhom 
+, rfm_final as (SELECT contactfullname, postalcode,
+cast(R_score AS varchar)||cast(F_score AS varchar)||cast(M_score AS varchar) as rfm_score
+FROM rfm_score)
+
+SELECT b.contactfullname, b.postalcode
+FROM public.segment_score a
+JOIN rfm_final b ON a.scores=b.rfm_score
+ where segment = 'Champions'
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
