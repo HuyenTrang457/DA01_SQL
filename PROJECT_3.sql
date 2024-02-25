@@ -24,7 +24,7 @@ Output: MONTH_ID, REVENUE, ORDER_NUMBER
 SELECT productline, revenue, order_number
 FROM 
 	(select  productline,month_id,year_id, sum(sales) as revenue, count(ordernumber) as order_number,
-	 rank() over(partition by year_id order by sum(sales) desc ,count(ordernumber) desc) AS stt
+	 	rank() over(partition by year_id order by sum(sales) desc ,count(ordernumber) desc) AS stt
 	from sales_dataset_rfm_prj_clean
 	 where month_id=11
 	 group by month_id, year_id,productline
@@ -37,11 +37,11 @@ Xếp hạng các các doanh thu đó theo từng năm.
 Output: YEAR_ID, PRODUCTLINE,REVENUE, RANK
 */
 SELECT * FROM 
-(SELECT year_id, productline, sum(sales) as revenue,
-rank() over(partition by year_id order by sum(sales) desc ) as rank
-FROM sales_dataset_rfm_prj_clean
-WHERE country='UK'
-group by  year_id, productline) AS a
+	(select year_id, productline, sum(sales) as revenue,
+		rank() over(partition by year_id order by sum(sales) desc ) as rank
+	from sales_dataset_rfm_prj_clean
+	where country='UK'
+	group by  year_id, productline) AS a
 WHERE rank =1
 
 /*5) Ai là khách hàng tốt nhất, phân tích dựa vào RFM 
