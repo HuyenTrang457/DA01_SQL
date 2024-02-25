@@ -21,7 +21,7 @@ WHERE stt=1
 /*3) Product line nào được bán nhiều ở tháng 11?
 Output: MONTH_ID, REVENUE, ORDER_NUMBER
 */
-SELECT month_id, revenue, order_number
+SELECT productline, revenue, order_number
 FROM 
 	(select  productline,month_id,year_id, sum(sales) as revenue, count(ordernumber) as order_number,
 	 rank() over(partition by year_id order by sum(sales) desc ,count(ordernumber) desc) AS stt
@@ -36,21 +36,17 @@ WHERE stt=1
 Xếp hạng các các doanh thu đó theo từng năm.
 Output: YEAR_ID, PRODUCTLINE,REVENUE, RANK
 */
+SELECT * FROM 
+(SELECT year_id, productline, sum(sales) as revenue,
+rank() over(partition by year_id order by sum(sales) desc ) as rank
+FROM sales_dataset_rfm_prj_clean
+WHERE country='UK'
+group by  year_id, productline) AS a
+WHERE rank =1
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+/*5) Ai là khách hàng tốt nhất, phân tích dựa vào RFM 
+(sử dụng lại bảng customer_segment ở buổi học 23)
+*/
 
 
 
