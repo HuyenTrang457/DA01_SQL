@@ -22,9 +22,9 @@ WHERE stt=1
 /*3) Product line nào được bán nhiều ở tháng 11?
 Output: MONTH_ID, REVENUE, ORDER_NUMBER
 */
-SELECT productline, revenue, order_number
+SELECT productline,   order_number
 FROM 
-	(select  productline,month_id,year_id, sum(sales) as revenue, count(ordernumber) as order_number,
+	(select  productline,month_id,year_id,  count(ordernumber) as order_number,
 	 	rank() over(partition by year_id order by sum(sales) desc ,count(ordernumber) desc) AS stt
 	from sales_dataset_rfm_prj_clean
 	 where month_id=11
@@ -32,6 +32,7 @@ FROM
 	 order by year_id, stt
 	) AS a
 WHERE stt=1 
+
 
 	--------------------------------------------------------------------------------------------
 /*4) Đâu là sản phẩm có doanh thu tốt nhất ở UK mỗi năm? 
