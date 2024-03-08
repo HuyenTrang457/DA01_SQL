@@ -1,4 +1,4 @@
---sử dụng BOXPLOT
+--sử dụng BOXPLOT-
 --B1: Xd Q1, Q3, IQR
 --B2: Min= Q1-1.5*IQR, MAX= Q3+1.5*IQR
  
