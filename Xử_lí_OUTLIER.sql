@@ -9,7 +9,7 @@
                percentile_cont(0.75) WITHIN GROUP (ORDER BY users) AS Q3,
                percentile_cont(0.75) WITHIN GROUP (ORDER BY users)-percentile_cont(0.25) WITHIN GROUP (ORDER BY users) AS IQR
        FROM user_data) AS a)
- --xd outlier <min or >max
+ --XD outlier <min or >max
  SELECT *
  FROM user_data
  WHERE users< (SELECT Min_value FROM CTE) OR users> (SELECT Max_value FROM CTE)
@@ -33,5 +33,4 @@
             FROM user_data)
  WHERE USERS IN(SELECT users FROM CTE_2 )
  
- 
- 
+
