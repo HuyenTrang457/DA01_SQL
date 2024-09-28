@@ -1,5 +1,5 @@
 --GOOGLE CLOUD--
---II. Ad-hoc tasks
+
 --1-- Thống kê tổng số lượng người mua và số lượng đơn hàng đã hoàn thành mỗi tháng ( Từ 1/2019-4/2022)
 
 -- (*) Note: Vì yêu cầu số lượng đơn hàng đã hoàn thành (aka status 'Complete') --> dùng 'delivered_date' ở bảng oder_items làm mốc thời gian ghi nhận 
