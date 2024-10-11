@@ -54,13 +54,13 @@ for i in range(len(b)):
 import mysql.connector
 def write_to_mysql(products): 
    db = mysql.connector.connect( 
-      host="your_host", # e.g., "localhost"
-      user="root", # e.g., "root" 
-      password="root",# e.g., "password"
-      database="mydatabase" # e.g., "product_db" 
+      host="your_host", 
+      user="root", 
+      password="root",# 
+      database="mydatabase" 
       ) 
    mycursor = db.cursor() 
-   #mycursor.execute("CREATE DATABASE mydatabase") # Create new table 
+   #mycursor.execute("CREATE DATABASE mydatabase") 
    mycursor.execute("CREATE TABLE IF NOT EXISTS products (name VARCHAR(100),price DECIMAL(10, 2),quantity INT)") 
    Insert data into table mycursor.execute("INSERT INTO products (name, price, quantity) VALUES (%s, %s, %s)",("Milks","15","1000")) 
    for product in products: 
