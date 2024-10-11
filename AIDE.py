@@ -37,9 +37,25 @@ FROM customers AS c
 LEFT JOIN orders AS o ON o.customer_id = c.customer_id
 WHERE o.order_id IS NULL
 
-Python
-------------------------------
 
+---Python------------------------------------------------------------------------------------------
+import mysql.connector
+def write_to_mysql(products): 
+   db = mysql.connector.connect( 
+      host="your_host", # e.g., "localhost"
+      user="root", # e.g., "root" 
+      password="root",# e.g., "password"
+      database="mydatabase" # e.g., "product_db" 
+      ) 
+   mycursor = db.cursor() 
+   #mycursor.execute("CREATE DATABASE mydatabase") # Create new table 
+   mycursor.execute("CREATE TABLE IF NOT EXISTS products (name VARCHAR(100),price DECIMAL(10, 2),quantity INT)") 
+   Insert data into table mycursor.execute("INSERT INTO products (name, price, quantity) VALUES (%s, %s, %s)",("Milks","15","1000")) 
+   for product in products: 
+      print(product) 
+   db.commit() 
+   mycursor.close() 
+   db.close()
 
 ## EX1
 
