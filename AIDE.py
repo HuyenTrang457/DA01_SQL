@@ -5,6 +5,7 @@ JOIN customers as c on o.customer_id=c.customer_id
 GROUP BY o.customer_id
 order by amount desc 
 limit 5
+
 ---2. top 10 producrs that have been ordered the most
  SELECT c.product_name,a.product_id, count(b.order_id) as amount
     FROM order_details as a
@@ -13,6 +14,7 @@ limit 5
     GROUP BY a.product_id,c.product_name
 	ORDER BY amount desc 
 	LIMIT 10 
+
 ---3.Sales revenue by each category in 1997:
 SELECT b.category_id,d.category_name, SUM(a.unit_price*a.quantity*(1-a.discount)) as revenue
 FROM order_details as a
@@ -39,6 +41,16 @@ WHERE o.order_id IS NULL
 
 
 ---Python------------------------------------------------------------------------------------------
+
+
+## EX1
+
+a= list(map(int, input().split()))
+b= a[::-1]
+for i in range(len(b)):
+    print(b[i],end=" ")
+
+##EX2
 import mysql.connector
 def write_to_mysql(products): 
    db = mysql.connector.connect( 
@@ -57,16 +69,8 @@ def write_to_mysql(products):
    mycursor.close() 
    db.close()
 
-## EX1
-
-a= list(map(int, input().split()))
-b= a[::-1]
-for i in range(len(b)):
-    print(b[i],end=" ")
 
 ##EX3
-
-##EX2
 import time 
 def time_decorator(func):
    def wrapper(*args,**kwargs):
