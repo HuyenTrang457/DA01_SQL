@@ -1,5 +1,4 @@
 --1.Thống kê tổng số lượng người mua và số lượng đơn hàng đã hoàn thành mỗi tháng ( Từ 1/2019-4/2022)
-    --insight: total_order và total_user tăng theo thời gian mỗi tháng, nhưng không đều
 
 SELECT
   FORMAT_DATE( '%Y-%m',b.delivered_at) AS month_year,
@@ -11,6 +10,16 @@ WHERE
   AND b.status='Complete'
 GROUP BY  1
 ORDER BY  1
+
+	/*--> Insight: 
+    - Nhìn chung số lượng người mua hàng và đơn hàng tiêu thụ đã hoàn thành tăng dần theo mỗi tháng và năm   
+    - Giai đoạn 2019-tháng 1 2022: người mua hàng có xu hướng mua sắm nhiều hơn vào ba tháng cuối năm (10-12) và tháng 1 năm kế tiếp do nhu cầu mua sắm cuối/đầu năm tăng 
+           và nhiều chương trình khuyến mãi/giảm giá cuối năm           
+    - Giai đoạn bốn tháng đầu năm 2022: ghi nhận tỷ lệ lượng người mua tăng mạnh so với ba tháng cuối năm 2021, khả năng do TheLook triển khai chương trình khuyến mãi mới nhằm 
+      kích cầu mua sắm các tháng đầu năm
+    - Tháng 7 2021 ghi nhận lượng mua hàng tăng bất thường, trái ngược với lượng mua giảm sút so với cùng kì năm 2020, có thể do TheLook triển khai campaign đặc biệt cải thiện tình hình 
+      doanh số cho riêng tháng 7.
+*/
 
 
 --2.Thống kê giá trị đơn hàng trung bình và tổng số người dùng khác nhau mỗi tháng ( Từ 1/2019-4/2022)
@@ -95,7 +104,9 @@ FROM CTE_2 AS a
  FROM age_tag
  GROUP BY gender,tag
 
-
+ -- Insight: trong giai đoạn Từ 1/2019-4/2022
+ --      - Giới tính Female: lớn tuổi nhất là 70 tuổi (525 người người dùng); nhỏ tuổi nhất là 12 tuổi (569 người dùng)
+ --      - Giới tính Male: lớn tuổi nhất là 70 tuổi (529 người người dùng); nhỏ tuổi nhất là 12 tuổi (546 người dùng)
 
 
 
